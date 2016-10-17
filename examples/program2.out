@@ -1,0 +1,45 @@
+enter P 0
+-->found {
+enter A 0
+-->found let
+-->found ID: sum
+-->found :=
+enter E 0
+enter T 0
+enter F 0
+-->found INTLIT: 5
+exit F 0
+exit T 0
+exit E 0
+-->found ;
+exit A 0
+ enter A 1
+-->found let
+-->found ID: k
+-->found :=
+ enter E 1
+ enter T 1
+ enter F 1
+-->found INTLIT: 20
+ exit F 1
+ exit T 1
+-->found +
+  enter T 2
+  enter F 2
+-->found INTLIT: 5
+  exit F 2
+-->found *
+   enter F 3
+-->found ID: sum
+   exit F 3
+  exit T 2
+ exit E 1
+-->found ;
+ exit A 1
+-->found }
+exit P 0
+
+=== GO BULLDOGS! Your parse was successful! ===
+
+symbol = k, value = 45
+symbol = sum, value = 5

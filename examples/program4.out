@@ -1,0 +1,12 @@
+enter P 0
+-->found {
+enter A 0
+-->found let
+-->found ID: a
+-->found :=
+enter E 0
+enter T 0
+enter F 0
+-->found ID: a
+
+***ERROR (line 2): uninitialized identifier used in expression

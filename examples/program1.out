@@ -1,0 +1,73 @@
+enter P 0
+-->found {
+enter A 0
+-->found let
+-->found ID: i
+-->found :=
+enter E 0
+enter T 0
+enter F 0
+-->found INTLIT: 5
+exit F 0
+exit T 0
+exit E 0
+-->found ;
+exit A 0
+ enter A 1
+-->found let
+-->found ID: j
+-->found :=
+ enter E 1
+ enter T 1
+ enter F 1
+-->found INTLIT: 7
+ exit F 1
+ exit T 1
+ exit E 1
+-->found ;
+ exit A 1
+  enter A 2
+-->found let
+-->found ID: sum
+-->found :=
+  enter E 2
+  enter T 2
+  enter F 2
+-->found (
+   enter E 3
+   enter T 3
+   enter F 3
+-->found ID: i
+   exit F 3
+   exit T 3
+-->found +
+    enter T 4
+    enter F 4
+-->found ID: j
+    exit F 4
+    exit T 4
+   exit E 3
+-->found )
+  exit F 2
+-->found /
+     enter F 5
+-->found INTLIT: 6
+     exit F 5
+  exit T 2
+-->found +
+     enter T 5
+      enter F 6
+-->found INTLIT: 4
+      exit F 6
+     exit T 5
+  exit E 2
+-->found ;
+  exit A 2
+-->found }
+exit P 0
+
+=== GO BULLDOGS! Your parse was successful! ===
+
+symbol = i, value = 5
+symbol = j, value = 7
+symbol = sum, value = 6

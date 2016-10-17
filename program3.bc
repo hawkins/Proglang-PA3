@@ -1,0 +1,30 @@
+{
+  let i := 2.5;
+  let j := 5.0;
+  if (i > j)
+  {
+    let k := 2 * i + j;
+    print "k: " k;
+    if ((k < 200) and (k > 0))
+    {
+      print "k is between 200 and 0.";
+    }
+    else
+    {
+      print "k is not between 200 and 0.";
+    }
+  }
+  else
+  {
+    let k := i * j + 2;
+    print "k: " k;
+    if ((-k > -200) and (-k < 0))
+    {
+      print "-k is between -200 and 0.";
+    }
+    else
+    {
+      print "-k is not between -200 and 0.";
+    }
+  }
+}

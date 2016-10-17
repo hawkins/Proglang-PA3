@@ -1,0 +1,9 @@
+{
+  let i := 1;
+  let j := 5;
+  read "input a number: " k;
+  let t := -k;
+  print "negative of k is: " t;
+  let t := 1+t*-j+k;
+  print "output is: " t;
+}

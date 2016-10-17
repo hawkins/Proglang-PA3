@@ -1,0 +1,250 @@
+enter P 0
+-->found {
+enter S 0
+enter A 0
+-->found let
+-->found ID: i
+-->found :=
+enter E 0
+enter B 0
+enter R 0
+enter T 0
+enter F 0
+enter U 0
+-->found FLOATLIT: 0.0
+exit U 0
+exit F 0
+exit T 0
+exit R 0
+exit B 0
+exit E 0
+-->found ;
+exit A 0
+exit S 0
+ enter S 1
+enter W 0
+-->found while
+-->found (
+ enter E 1
+ enter B 1
+ enter R 1
+ enter T 1
+ enter F 1
+ enter U 1
+-->found ID: i
+ exit U 1
+ exit F 1
+ exit T 1
+ exit R 1
+-->found <
+  enter R 2
+  enter T 2
+  enter F 2
+  enter U 2
+-->found FLOATLIT: 5
+  exit U 2
+  exit F 2
+  exit T 2
+  exit R 2
+ exit B 1
+ exit E 1
+-->found )
+ enter P 1
+-->found {
+  enter S 2
+enter O 0
+-->found print
+-->found string: "i: "
+-->found ID: i
+-->found ;
+exit O 0
+  exit S 2
+   enter S 3
+ enter A 1
+-->found let
+-->found ID: j
+-->found :=
+  enter E 2
+  enter B 2
+   enter R 3
+   enter T 3
+   enter F 3
+   enter U 3
+-->found FLOATLIT: 0
+   exit U 3
+   exit F 3
+   exit T 3
+   exit R 3
+  exit B 2
+  exit E 2
+-->found ;
+ exit A 1
+   exit S 3
+    enter S 4
+ enter W 1
+-->found while
+-->found (
+   enter E 3
+   enter B 3
+    enter R 4
+    enter T 4
+    enter F 4
+    enter U 4
+-->found (
+    enter E 4
+    enter B 4
+     enter R 5
+     enter T 5
+     enter F 5
+     enter U 5
+-->found ID: j
+     exit U 5
+     exit F 5
+     exit T 5
+     exit R 5
+-->found <
+      enter R 6
+      enter T 6
+      enter F 6
+      enter U 6
+-->found ID: i
+      exit U 6
+      exit F 6
+      exit T 6
+      exit R 6
+    exit B 4
+    exit E 4
+-->found )
+    exit U 4
+    exit F 4
+    exit T 4
+    exit R 4
+   exit B 3
+-->found or
+     enter B 5
+       enter R 7
+       enter T 7
+       enter F 7
+       enter U 7
+-->found (
+     enter E 5
+      enter B 6
+        enter R 8
+        enter T 8
+        enter F 8
+        enter U 8
+-->found ID: j
+        exit U 8
+        exit F 8
+        exit T 8
+        exit R 8
+-->found ==
+         enter R 9
+         enter T 9
+         enter F 9
+         enter U 9
+-->found FLOATLIT: 5
+         exit U 9
+         exit F 9
+         exit T 9
+         exit R 9
+      exit B 6
+     exit E 5
+-->found )
+       exit U 7
+       exit F 7
+       exit T 7
+       exit R 7
+     exit B 5
+   exit E 3
+-->found )
+  enter P 2
+-->found {
+     enter S 5
+ enter O 1
+-->found print
+-->found string: "j: "
+-->found ID: j
+-->found ;
+ exit O 1
+     exit S 5
+      enter S 6
+  enter A 2
+-->found let
+-->found ID: j
+-->found :=
+      enter E 6
+       enter B 7
+          enter R 10
+          enter T 10
+          enter F 10
+          enter U 10
+-->found ID: j
+          exit U 10
+          exit F 10
+          exit T 10
+-->found +
+           enter T 11
+           enter F 11
+           enter U 11
+-->found FLOATLIT: 1
+           exit U 11
+           exit F 11
+           exit T 11
+          exit R 10
+       exit B 7
+      exit E 6
+-->found ;
+  exit A 2
+      exit S 6
+-->found }
+  exit P 2
+ exit W 1
+    exit S 4
+       enter S 7
+  enter O 2
+-->found print
+-->found ID: j
+-->found ;
+  exit O 2
+       exit S 7
+        enter S 8
+   enter A 3
+-->found let
+-->found ID: i
+-->found :=
+       enter E 7
+        enter B 8
+           enter R 11
+            enter T 12
+            enter F 12
+            enter U 12
+-->found ID: i
+            exit U 12
+            exit F 12
+            exit T 12
+-->found +
+             enter T 13
+             enter F 13
+             enter U 13
+-->found FLOATLIT: 1
+             exit U 13
+             exit F 13
+             exit T 13
+           exit R 11
+        exit B 8
+       exit E 7
+-->found ;
+   exit A 3
+        exit S 8
+-->found }
+ exit P 1
+exit W 0
+ exit S 1
+-->found }
+exit P 0
+
+=== GO BULLDOGS! Your parse was successful! ===
+
+symbol = i, value = 1
+symbol = j, value = 1

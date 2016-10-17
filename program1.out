@@ -1,0 +1,143 @@
+enter P 0
+-->found {
+enter S 0
+enter A 0
+-->found let
+-->found ID: i
+-->found :=
+enter E 0
+enter B 0
+enter R 0
+enter T 0
+enter F 0
+enter U 0
+-->found FLOATLIT: 1
+exit U 0
+exit F 0
+exit T 0
+exit R 0
+exit B 0
+exit E 0
+-->found ;
+exit A 0
+exit S 0
+ enter S 1
+ enter A 1
+-->found let
+-->found ID: j
+-->found :=
+ enter E 1
+ enter B 1
+ enter R 1
+ enter T 1
+ enter F 1
+ enter U 1
+-->found FLOATLIT: 5
+ exit U 1
+ exit F 1
+ exit T 1
+ exit R 1
+ exit B 1
+ exit E 1
+-->found ;
+ exit A 1
+ exit S 1
+  enter S 2
+enter G 0
+-->found read
+-->found string: "input a number: "
+-->found ID: k
+-->found ;
+exit G 0
+  exit S 2
+   enter S 3
+  enter A 2
+-->found let
+-->found ID: t
+-->found :=
+  enter E 2
+  enter B 2
+  enter R 2
+  enter T 2
+  enter F 2
+-->found -
+  enter U 2
+-->found ID: k
+  exit U 2
+  exit F 2
+  exit T 2
+  exit R 2
+  exit B 2
+  exit E 2
+-->found ;
+  exit A 2
+   exit S 3
+    enter S 4
+enter O 0
+-->found print
+-->found string: "negative of k is: "
+-->found ID: t
+-->found ;
+exit O 0
+    exit S 4
+     enter S 5
+   enter A 3
+-->found let
+-->found ID: t
+-->found :=
+   enter E 3
+   enter B 3
+   enter R 3
+   enter T 3
+   enter F 3
+   enter U 3
+-->found FLOATLIT: 1
+   exit U 3
+   exit F 3
+   exit T 3
+-->found +
+    enter T 4
+    enter F 4
+    enter U 4
+-->found ID: t
+    exit U 4
+    exit F 4
+-->found *
+     enter F 5
+-->found -
+     enter U 5
+-->found ID: j
+     exit U 5
+     exit F 5
+    exit T 4
+-->found +
+     enter T 5
+      enter F 6
+      enter U 6
+-->found ID: k
+      exit U 6
+      exit F 6
+     exit T 5
+   exit R 3
+   exit B 3
+   exit E 3
+-->found ;
+   exit A 3
+     exit S 5
+      enter S 6
+ enter O 1
+-->found print
+-->found string: "output is: "
+-->found ID: t
+-->found ;
+ exit O 1
+      exit S 6
+-->found }
+exit P 0
+
+=== GO BULLDOGS! Your parse was successful! ===
+
+symbol = i, value = 1
+symbol = j, value = 5
+symbol = k, value = 1
+symbol = t, value = 7

@@ -1,0 +1,4 @@
+enter P 0
+-->found {
+
+***ERROR (line 2): assignment statement does not start with 'let'

@@ -1,0 +1,19 @@
+{
+  let t := 1;
+  print "k! calculator.";
+  read "input the value of k: " k;
+  if (k < 0)
+  {
+    print "The value of k cannot be negative.";
+    print "You entered: " k;
+  }
+  else
+  {
+    while (k > 1)
+    {
+      let t := t * k;
+      let k := k - 1;
+    }
+    print "k! is: " t;
+  }
+}

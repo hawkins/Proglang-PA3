@@ -1,0 +1,386 @@
+enter P 0
+-->found {
+enter S 0
+enter A 0
+-->found let
+-->found ID: i
+-->found :=
+enter E 0
+enter B 0
+enter R 0
+enter T 0
+enter F 0
+enter U 0
+-->found FLOATLIT: 2.5
+exit U 0
+exit F 0
+exit T 0
+exit R 0
+exit B 0
+exit E 0
+-->found ;
+exit A 0
+exit S 0
+ enter S 1
+ enter A 1
+-->found let
+-->found ID: j
+-->found :=
+ enter E 1
+ enter B 1
+ enter R 1
+ enter T 1
+ enter F 1
+ enter U 1
+-->found FLOATLIT: 5.0
+ exit U 1
+ exit F 1
+ exit T 1
+ exit R 1
+ exit B 1
+ exit E 1
+-->found ;
+ exit A 1
+ exit S 1
+  enter S 2
+enter C 0
+-->found if
+-->found (
+  enter E 2
+  enter B 2
+  enter R 2
+  enter T 2
+  enter F 2
+  enter U 2
+-->found ID: i
+  exit U 2
+  exit F 2
+  exit T 2
+  exit R 2
+-->found >
+   enter R 3
+   enter T 3
+   enter F 3
+   enter U 3
+-->found ID: j
+   exit U 3
+   exit F 3
+   exit T 3
+   exit R 3
+  exit B 2
+  exit E 2
+-->found )
+ enter P 1
+-->found {
+   enter S 3
+  enter A 2
+-->found let
+-->found ID: k
+-->found :=
+   enter E 3
+   enter B 3
+    enter R 4
+    enter T 4
+    enter F 4
+    enter U 4
+-->found FLOATLIT: 2
+    exit U 4
+    exit F 4
+-->found *
+     enter F 5
+     enter U 5
+-->found ID: i
+     exit U 5
+     exit F 5
+    exit T 4
+-->found +
+     enter T 5
+      enter F 6
+      enter U 6
+-->found ID: j
+      exit U 6
+      exit F 6
+     exit T 5
+    exit R 4
+   exit B 3
+   exit E 3
+-->found ;
+  exit A 2
+   exit S 3
+    enter S 4
+enter O 0
+-->found print
+-->found string: "k: "
+-->found ID: k
+-->found ;
+exit O 0
+    exit S 4
+     enter S 5
+ enter C 1
+-->found if
+-->found (
+    enter E 4
+    enter B 4
+     enter R 5
+      enter T 6
+       enter F 7
+       enter U 7
+-->found (
+     enter E 5
+     enter B 5
+      enter R 6
+       enter T 7
+        enter F 8
+        enter U 8
+-->found ID: k
+        exit U 8
+        exit F 8
+       exit T 7
+      exit R 6
+-->found <
+       enter R 7
+        enter T 8
+         enter F 9
+         enter U 9
+-->found FLOATLIT: 200
+         exit U 9
+         exit F 9
+        exit T 8
+       exit R 7
+     exit B 5
+     exit E 5
+-->found )
+       exit U 7
+       exit F 7
+      exit T 6
+     exit R 5
+    exit B 4
+-->found and
+      enter B 6
+        enter R 8
+         enter T 9
+          enter F 10
+          enter U 10
+-->found (
+      enter E 6
+       enter B 7
+         enter R 9
+          enter T 10
+           enter F 11
+           enter U 11
+-->found ID: k
+           exit U 11
+           exit F 11
+          exit T 10
+         exit R 9
+-->found >
+          enter R 10
+           enter T 11
+            enter F 12
+            enter U 12
+-->found FLOATLIT: 0
+            exit U 12
+            exit F 12
+           exit T 11
+          exit R 10
+       exit B 7
+      exit E 6
+-->found )
+          exit U 10
+          exit F 10
+         exit T 9
+        exit R 8
+      exit B 6
+    exit E 4
+-->found )
+  enter P 2
+-->found {
+      enter S 6
+ enter O 1
+-->found print
+-->found string: "k is between 200 and 0."
+-->found ;
+ exit O 1
+      exit S 6
+-->found }
+  exit P 2
+-->found else
+   enter P 3
+-->found {
+       enter S 7
+  enter O 2
+-->found print
+-->found string: "k is not between 200 and 0."
+-->found ;
+  exit O 2
+       exit S 7
+-->found }
+   exit P 3
+ exit C 1
+     exit S 5
+-->found }
+ exit P 1
+-->found else
+    enter P 4
+-->found {
+        enter S 8
+   enter A 3
+-->found let
+-->found ID: k
+-->found :=
+       enter E 7
+        enter B 8
+           enter R 11
+            enter T 12
+             enter F 13
+             enter U 13
+-->found ID: i
+             exit U 13
+             exit F 13
+-->found *
+              enter F 14
+              enter U 14
+-->found ID: j
+              exit U 14
+              exit F 14
+            exit T 12
+-->found +
+             enter T 13
+               enter F 15
+               enter U 15
+-->found FLOATLIT: 2
+               exit U 15
+               exit F 15
+             exit T 13
+           exit R 11
+        exit B 8
+       exit E 7
+-->found ;
+   exit A 3
+        exit S 8
+         enter S 9
+   enter O 3
+-->found print
+-->found string: "k: "
+-->found ID: k
+-->found ;
+   exit O 3
+         exit S 9
+          enter S 10
+  enter C 2
+-->found if
+-->found (
+        enter E 8
+         enter B 9
+            enter R 12
+              enter T 14
+                enter F 16
+                enter U 16
+-->found (
+         enter E 9
+          enter B 10
+             enter R 13
+               enter T 15
+                 enter F 17
+-->found -
+                 enter U 17
+-->found ID: k
+                 exit U 17
+                 exit F 17
+               exit T 15
+             exit R 13
+-->found >
+              enter R 14
+                enter T 16
+                  enter F 18
+-->found -
+                  enter U 18
+-->found FLOATLIT: 200
+                  exit U 18
+                  exit F 18
+                exit T 16
+              exit R 14
+          exit B 10
+         exit E 9
+-->found )
+                exit U 16
+                exit F 16
+              exit T 14
+            exit R 12
+         exit B 9
+-->found and
+           enter B 11
+               enter R 15
+                 enter T 17
+                   enter F 19
+                   enter U 19
+-->found (
+          enter E 10
+            enter B 12
+                enter R 16
+                  enter T 18
+                    enter F 20
+-->found -
+                    enter U 20
+-->found ID: k
+                    exit U 20
+                    exit F 20
+                  exit T 18
+                exit R 16
+-->found <
+                 enter R 17
+                   enter T 19
+                     enter F 21
+                     enter U 21
+-->found FLOATLIT: 0
+                     exit U 21
+                     exit F 21
+                   exit T 19
+                 exit R 17
+            exit B 12
+          exit E 10
+-->found )
+                   exit U 19
+                   exit F 19
+                 exit T 17
+               exit R 15
+           exit B 11
+        exit E 8
+-->found )
+     enter P 5
+-->found {
+           enter S 11
+    enter O 4
+-->found print
+-->found string: "-k is between -200 and 0."
+-->found ;
+    exit O 4
+           exit S 11
+-->found }
+     exit P 5
+-->found else
+      enter P 6
+-->found {
+            enter S 12
+     enter O 5
+-->found print
+-->found string: "-k is not between -200 and 0."
+-->found ;
+     exit O 5
+            exit S 12
+-->found }
+      exit P 6
+  exit C 2
+          exit S 10
+-->found }
+    exit P 4
+exit C 0
+  exit S 2
+-->found }
+exit P 0
+
+=== GO BULLDOGS! Your parse was successful! ===
+
+symbol = i, value = 2.5
+symbol = j, value = 5
+symbol = k, value = 14.5
