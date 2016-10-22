@@ -1,6 +1,7 @@
-/******************************************************************* 
+/*******************************************************************
 purpose: CSE 4713 / 6713 Assignment 3 example recursive descent parser
  author: J. Edward Swan II
+ editor: Josh Hawkins
  *******************************************************************/
 %option noyywrap
 %{
@@ -10,8 +11,8 @@ int yyLine = 1;
 %}
 
 %%
- 
- /* Keywords */ 
+
+ /* Keywords */
 
 let       { return TOK_LET; }
 
@@ -52,5 +53,3 @@ let       { return TOK_LET; }
  /* Recognize end of file */
 
 <<EOF>>   { return TOK_EOF; }
-
-

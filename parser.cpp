@@ -1,6 +1,7 @@
 //*****************************************************************************
 // purpose: CSE 4713 / 6713 Assignment 3 example recursive descent parser
 //  author: J. Edward Swan II
+//  editor: Josh Hawkins
 //*****************************************************************************
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,22 +25,39 @@ extern int   yyLine;       // the current source code line
 }
 
 // Production functions
-void  P( void );
-void  A( void );
-float E( void );
-float T( void );
-float F( void );
+void  P ( void );
+void  S ( void );
+void  A ( void );
+float E ( void );
+bool  B ( void ); // TODO: Is this a boolean? Not float? What?
+float R ( void ); // TODO: This is arithmetic
+float T ( void );
+float F ( void );
+float U ( void );
+// TODO: G and O, what are these rules?
+float G ( void );
+float O ( void );
+void  C ( void );
+void  W ( void );
 
 // Function declarations for checking whether the current token is
 // in the first set of each production rule.
-bool IsFirstOfP( void );
-bool IsFirstOfA( void );
-bool IsFirstOfE( void );
-bool IsFirstOfT( void );
-bool IsFirstOfF( void );
+bool IsFirstOfP ( void );
+bool IsFirstOfS ( void );
+bool IsFirstOfA ( void );
+bool IsFirstOfE ( void );
+bool IsFirstOfB ( void );
+bool IsFirstOfR ( void );
+bool IsFirstOfT ( void );
+bool IsFirstOfF ( void );
+bool IsFirstOfU ( void );
+bool IsFirstOfG ( void );
+bool IsFirstOfO ( void );
+bool IsFirstOfC ( void );
+bool IsFirstOfW ( void );
 
 // Function to help print the tree nesting
-string psp( int );
+string psp ( int );
 
 // Data type for the Symbol Table
 typedef map<string, float> SymbolTableT;
@@ -51,7 +69,7 @@ SymbolTableT SymbolTable;  // The symbol table
 
 //*****************************************************************************
 // The main processing loop
-int main( int argc, char* argv[] )
+int main ( int argc, char* argv[] )
 {
   int token;   // hold each token code
 
@@ -69,20 +87,20 @@ int main( int argc, char* argv[] )
       throw "missing '{' at beginning of program";
 
     // Process P Production
-    P(); 
+    P();
 
     if( iTok != TOK_EOF )
       throw "end of file expected, but there is more here!";
   }
-  catch( char const *errmsg )    
+  catch( char const *errmsg )
   {
     cout << endl << "***ERROR (line " << yyLine << "): "<< errmsg << endl;
     return 1;
   }
 
   // Tell the world about our success!!
-  cout << endl 
-       << "=== GO BULLDOGS! Your parse was successful! ===" 
+  cout << endl
+       << "=== GO BULLDOGS! Your parse was successful! ==="
        << endl << endl;;
 
   // Print out the symbol table
@@ -95,12 +113,12 @@ int main( int argc, char* argv[] )
 }
 
 //*****************************************************************************
-// P --> { A \{ A \} }
-void P( void )
+// P --> \{ {S} \}
+void P ( void )
 {
   static int Pcnt = 0; // Count the number of P's
   int CurPcnt = Pcnt++;
-  char const *Perr = 
+  char const *Perr =
     "assignment statement does not start with 'let'";
 
   cout << psp( CurPcnt ) << "enter P " << CurPcnt << endl;
@@ -109,15 +127,9 @@ void P( void )
   cout << "-->found " << yytext << endl;
   iTok = yylex();
 
-  // We next expect to see an A
-  if( IsFirstOfA() )
-    A();
-  else 
-    throw Perr;
-
-  // The A might be followed by a series of A's
-  while( IsFirstOfA() )
-    A();
+  // There might be a series of S's
+  while( IsFirstOfS() )
+    S();
 
   // Last should be a '}'
   if( iTok != TOK_CLOSEBRACE )
@@ -126,13 +138,55 @@ void P( void )
 
   // Read the next token
   iTok = yylex();
-    
+
   cout << psp( CurPcnt ) << "exit P " << CurPcnt << endl;
 }
 
 //*****************************************************************************
-// A --> let ID := E ; 
-void A( void )
+// S --> A | G | O | C | W
+void S ( void )
+{
+  static int Scnt = 0; // Count the number of P's
+  int CurScnt = Scnt++;
+  char const *Serr =
+    "assignment statement does not start with 'let', 'read', 'print', if', or 'while'";
+
+  cout << psp( CurScnt ) << "enter S " << CurScnt << endl;
+
+  // We know we have found a beginning token, but which?
+  switch( iTok ) {
+    case TOK_LET:
+      A();
+      break;
+
+    case TOK_READ:
+      G();
+      break;
+
+    case TOK_PRINT:
+      O();
+      break;
+
+    case TOK_IF:
+      C();
+      break;
+
+    case TOK_WHILE:
+      W();
+      break;
+
+    default:
+      // If we made it to here, syntax error
+      throw Serr;
+  }
+
+  cout << psp( CurScnt ) << "exit S" << CurScnt << endl;
+}
+
+
+//*****************************************************************************
+// A --> let ID := E ;
+void A ( void )
 {
   float rValue;        // Value returned from expression
   static int Acnt = 0; // Count the number of A's
@@ -155,7 +209,7 @@ void A( void )
   if( iTok != TOK_ASSIGN )
     throw "missing ':=' symbol in assignment statement";
   cout << "-->found " << yytext << endl;
-  
+
   // Next should be an expression
   iTok = yylex();
   if( IsFirstOfE() )
@@ -178,7 +232,7 @@ void A( void )
   // Last should be a ';' token
   if( iTok != TOK_SEMICOLON )
     throw "missing ';' at end of assignment statement";
-  cout << "-->found " << yytext << endl;  
+  cout << "-->found " << yytext << endl;
 
   // Read the next token
   iTok = yylex();
@@ -191,10 +245,10 @@ void A( void )
 float E( void )
 {
   float rValue1 = 0;   // The value to return
-  float rValue2;
+  float rValue2;       // TODO: What is this? its used for controlling additions and subtractions to rValue1
   static int Ecnt = 0; // Count the number of E's
   int CurEcnt = Ecnt++;
-  char const *Terr = 
+  char const *Terr =
     "term does not start with 'ID' | 'INTLIT' | '('";
 
   cout << psp( CurEcnt ) << "enter E " << CurEcnt << endl;
@@ -225,7 +279,7 @@ float E( void )
 
     case TOK_MINUS:
       rValue1 = rValue1 - rValue2;
-    }    
+    }
   }
 
   cout << psp( CurEcnt ) << "exit E " << CurEcnt << endl;
@@ -235,13 +289,13 @@ float E( void )
 
 //*****************************************************************************
 // T --> F { ( * | / ) F }
-float T( void )
+float T ( void )
 {
   float rValue1 = 0;   // The value to return
   float rValue2;
   static int Tcnt = 0; // Count the number of T's
   int CurTcnt = Tcnt++;
-  char const *Ferr = 
+  char const *Ferr =
     "factor does not start with 'ID' | 'INTLIT' | '('";
 
   cout << psp( CurTcnt ) << "enter T " << CurTcnt << endl;
@@ -251,7 +305,7 @@ float T( void )
     rValue1 = F();
   else
     throw Ferr;
-  
+
   // As long as the next token is * or /, keep parsing F's
   while( iTok == TOK_MULTIPLY || iTok == TOK_DIVIDE )
   {
@@ -272,7 +326,7 @@ float T( void )
 
     case TOK_DIVIDE:
       rValue1 = rValue1 / rValue2;
-    }    
+    }
   }
 
   cout << psp( CurTcnt ) << "exit T " << CurTcnt << endl;
@@ -306,9 +360,9 @@ float F( void )
     rValue = it->second;
 
     // Read past what we have found
-    iTok = yylex(); 
+    iTok = yylex();
     break;
-    
+
   case TOK_INTLIT:
     cout << "-->found INTLIT: " << yytext << endl;
 
@@ -342,31 +396,78 @@ float F( void )
 }
 
 //*****************************************************************************
+// IsFirstOfX Functions
+//*****************************************************************************
 bool IsFirstOfP( void )
 {
   return iTok == TOK_OPENBRACE;
 }
 //*****************************************************************************
-bool IsFirstOfA( void )
+bool IsFirstOfS( void )
+{
+  return iTok == TOK_LET || iTok == TOK_READ || iTok == TOK_PRINT || iTok == TOK_IF || iTok == TOK_WHILE;
+}
+//*****************************************************************************
+bool ISFirstOfA( void)
 {
   return iTok == TOK_LET;
 }
 //*****************************************************************************
 bool IsFirstOfE( void )
 {
-  return iTok == TOK_IDENTIFIER || iTok == TOK_INTLIT || iTok == TOK_OPENPAREN;
+  return iTok == TOK_NOT || iTok == TOK_MINUS || iTok == TOK_OPENPAREN || iTok == TOK_IDENTIFIER || iTok == TOK_FLOATLIT;
+}
+//*****************************************************************************
+bool IsFirstOfB( void )
+{
+  // Same as E
+  return IsFirstOfE();
+}
+//*****************************************************************************
+bool IsFirstOfR( void )
+{
+  // Same as E
+  return IsFirstOfE();
 }
 //*****************************************************************************
 bool IsFirstOfT( void )
 {
-  return iTok == TOK_IDENTIFIER || iTok == TOK_INTLIT || iTok == TOK_OPENPAREN;
+  // Same as E
+  return IsFirstOfE();
 }
 //*****************************************************************************
 bool IsFirstOfF( void )
 {
-  return iTok == TOK_IDENTIFIER || iTok == TOK_INTLIT || iTok == TOK_OPENPAREN;
+  // Same as E
+  return IsFirstOfE();
 }
-
+//*****************************************************************************
+bool IsFirstOfU( void )
+{
+  return iTok == TOK_OPENPAREN || iTok == TOK_IDENTIFIER || iTok == TOK_FLOATLIT;
+}
+//*****************************************************************************
+bool IsFirstOfG( void )
+{
+  return iTok == TOK_READ;
+}
+//*****************************************************************************
+bool IsFirstOfO( void )
+{
+  return iTok == TOK_PRINT;
+}
+//*****************************************************************************
+bool IsFirstOfC( void )
+{
+  return iTok == TOK_IF;
+}
+//*****************************************************************************
+bool IsFirstOfW( void )
+{
+  return iTok == TOK_WHILE;
+}
+//*****************************************************************************
+// Helper Functions
 //*****************************************************************************
 string psp( int n ) // Stands for p-space, but I want the name short
 {

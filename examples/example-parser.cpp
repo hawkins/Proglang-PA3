@@ -69,20 +69,20 @@ int main( int argc, char* argv[] )
       throw "missing '{' at beginning of program";
 
     // Process P Production
-    P(); 
+    P();
 
     if( iTok != TOK_EOF )
       throw "end of file expected, but there is more here!";
   }
-  catch( char const *errmsg )    
+  catch( char const *errmsg )
   {
     cout << endl << "***ERROR (line " << yyLine << "): "<< errmsg << endl;
     return 1;
   }
 
   // Tell the world about our success!!
-  cout << endl 
-       << "=== GO BULLDOGS! Your parse was successful! ===" 
+  cout << endl
+       << "=== GO BULLDOGS! Your parse was successful! ==="
        << endl << endl;;
 
   // Print out the symbol table
@@ -100,7 +100,7 @@ void P( void )
 {
   static int Pcnt = 0; // Count the number of P's
   int CurPcnt = Pcnt++;
-  char const *Perr = 
+  char const *Perr =
     "assignment statement does not start with 'let'";
 
   cout << psp( CurPcnt ) << "enter P " << CurPcnt << endl;
@@ -112,7 +112,7 @@ void P( void )
   // We next expect to see an A
   if( IsFirstOfA() )
     A();
-  else 
+  else
     throw Perr;
 
   // The A might be followed by a series of A's
@@ -126,12 +126,12 @@ void P( void )
 
   // Read the next token
   iTok = yylex();
-    
+
   cout << psp( CurPcnt ) << "exit P " << CurPcnt << endl;
 }
 
 //*****************************************************************************
-// A --> let ID := E ; 
+// A --> let ID := E ;
 void A( void )
 {
   float rValue;        // Value returned from expression
@@ -155,7 +155,7 @@ void A( void )
   if( iTok != TOK_ASSIGN )
     throw "missing ':=' symbol in assignment statement";
   cout << "-->found " << yytext << endl;
-  
+
   // Next should be an expression
   iTok = yylex();
   if( IsFirstOfE() )
@@ -178,7 +178,7 @@ void A( void )
   // Last should be a ';' token
   if( iTok != TOK_SEMICOLON )
     throw "missing ';' at end of assignment statement";
-  cout << "-->found " << yytext << endl;  
+  cout << "-->found " << yytext << endl;
 
   // Read the next token
   iTok = yylex();
@@ -194,7 +194,7 @@ float E( void )
   float rValue2;
   static int Ecnt = 0; // Count the number of E's
   int CurEcnt = Ecnt++;
-  char const *Terr = 
+  char const *Terr =
     "term does not start with 'ID' | 'INTLIT' | '('";
 
   cout << psp( CurEcnt ) << "enter E " << CurEcnt << endl;
@@ -225,7 +225,7 @@ float E( void )
 
     case TOK_MINUS:
       rValue1 = rValue1 - rValue2;
-    }    
+    }
   }
 
   cout << psp( CurEcnt ) << "exit E " << CurEcnt << endl;
@@ -241,7 +241,7 @@ float T( void )
   float rValue2;
   static int Tcnt = 0; // Count the number of T's
   int CurTcnt = Tcnt++;
-  char const *Ferr = 
+  char const *Ferr =
     "factor does not start with 'ID' | 'INTLIT' | '('";
 
   cout << psp( CurTcnt ) << "enter T " << CurTcnt << endl;
@@ -251,7 +251,7 @@ float T( void )
     rValue1 = F();
   else
     throw Ferr;
-  
+
   // As long as the next token is * or /, keep parsing F's
   while( iTok == TOK_MULTIPLY || iTok == TOK_DIVIDE )
   {
@@ -272,7 +272,7 @@ float T( void )
 
     case TOK_DIVIDE:
       rValue1 = rValue1 / rValue2;
-    }    
+    }
   }
 
   cout << psp( CurTcnt ) << "exit T " << CurTcnt << endl;
@@ -281,7 +281,7 @@ float T( void )
 }
 
 //*****************************************************************************
-// F --> ID | INTLIT | (
+// F --> ID | INTLIT | (E)
 float F( void )
 {
   float rValue = 0;           // the value to return
@@ -306,9 +306,9 @@ float F( void )
     rValue = it->second;
 
     // Read past what we have found
-    iTok = yylex(); 
+    iTok = yylex();
     break;
-    
+
   case TOK_INTLIT:
     cout << "-->found INTLIT: " << yytext << endl;
 
