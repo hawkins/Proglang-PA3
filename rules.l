@@ -21,6 +21,7 @@ print     { return TOK_PRINT; }
 and       { return TOK_AND; }
 or        { return TOK_OR; }
 not       { return TOK_NOT; }
+while     { return TOK_WHILE; }
 
  /* Punctuation */
 

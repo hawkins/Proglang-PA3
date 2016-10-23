@@ -587,7 +587,10 @@ void C ( void )
 
   cout << psp( CurCcnt ) << "enter C " << CurCcnt << endl;
 
-  // We've already seen the if, is a ( next?
+  // We've already seen the if
+  cout << "-->found " << yytext << endl;
+
+  // A ( should be next
   iTok = yylex();
   if( iTok == TOK_OPENPAREN )
   {
@@ -647,7 +650,10 @@ void W ( void )
 
   cout << psp( CurWcnt ) << "enter W " << CurWcnt << endl;
 
-  // We've already seen the while, is a ( next?
+  // We've already seen the while
+  cout << "-->found " << yytext << endl;
+
+  // A ( should be next
   iTok = yylex();
   if( iTok == TOK_OPENPAREN )
   {
