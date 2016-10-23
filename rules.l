@@ -13,7 +13,9 @@ int yyLine = 1;
 %%
 
  /* Keywords */
-
+if        { return TOK_IF; }
+else      { return TOK_ELSE; }
+read      { return TOK_READ; }
 let       { return TOK_LET; }
 
  /* Punctuation */
@@ -36,7 +38,10 @@ let       { return TOK_LET; }
  /* Abstractions */
 
 [A-Za-z][0-9A-Za-z_]*  { return TOK_IDENTIFIER; }
-[0-9]+                 { return TOK_INTLIT; }
+[0-9]+                 { return TOK_FLOATLIT; }
+\"[^\"]*\"             { return TOK_STRINGLIT; }
+\"[^\"]+               { return TOK_EOF_SL; }
+
 
  /* Eat any whitespace */
 

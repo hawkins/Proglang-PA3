@@ -29,14 +29,13 @@ void  P ( void );
 void  S ( void );
 void  A ( void );
 float E ( void );
-bool  B ( void ); // TODO: Is this a boolean? Not float? What?
+float B ( void ); // TODO: Is this a boolean? Not float? What?
 float R ( void ); // TODO: This is arithmetic
 float T ( void );
 float F ( void );
 float U ( void );
-// TODO: G and O, what are these rules?
-float G ( void );
-float O ( void );
+void  G ( void );
+void  O ( void );
 void  C ( void );
 void  W ( void );
 
@@ -118,8 +117,6 @@ void P ( void )
 {
   static int Pcnt = 0; // Count the number of P's
   int CurPcnt = Pcnt++;
-  char const *Perr =
-    "assignment statement does not start with 'let'";
 
   cout << psp( CurPcnt ) << "enter P " << CurPcnt << endl;
 
@@ -137,7 +134,6 @@ void P ( void )
   cout << "-->found " << yytext << endl;
 
   // Read the next token
-  iTok = yylex();
 
   cout << psp( CurPcnt ) << "exit P " << CurPcnt << endl;
 }
@@ -149,7 +145,7 @@ void S ( void )
   static int Scnt = 0; // Count the number of P's
   int CurScnt = Scnt++;
   char const *Serr =
-    "assignment statement does not start with 'let', 'read', 'print', if', or 'while'";
+    "statement does not start with 'let', 'read', 'print', if', or 'while'";
 
   cout << psp( CurScnt ) << "enter S " << CurScnt << endl;
 
@@ -230,6 +226,7 @@ void A ( void )
   //cout << "key: " << it->first << " val: " << it->second << endl;
 
   // Last should be a ';' token
+  iTok = yylex();
   if( iTok != TOK_SEMICOLON )
     throw "missing ';' at end of assignment statement";
   cout << "-->found " << yytext << endl;
@@ -241,48 +238,120 @@ void A ( void )
 }
 
 //*****************************************************************************
-// E --> T { ( + | - ) T }
-float E( void )
+// E --> B {( and | or ) B }
+float E ( void )
 {
   float rValue1 = 0;   // The value to return
-  float rValue2;       // TODO: What is this? its used for controlling additions and subtractions to rValue1
+  float rValue2;
   static int Ecnt = 0; // Count the number of E's
   int CurEcnt = Ecnt++;
-  char const *Terr =
-    "term does not start with 'ID' | 'INTLIT' | '('";
+  char const *Berr =
+    "expression does not start with 'not' | '-' | 'ID' | 'FLOATLIT' | '('";
 
   cout << psp( CurEcnt ) << "enter E " << CurEcnt << endl;
 
+  // We next expect to see a B
+  if( IsFirstOfB() )
+    B();
+  else
+    throw Berr;
+
+  // As long as the next token is and or or, keep parsing B's
+  while( iTok == TOK_AND || iTok == TOK_OR )
+  {
+    cout << "-->found " << yytext << endl;
+    int iTokLast = iTok;
+    iTok = yylex();
+    if( IsFirstOfB() )
+      rValue1 = B();
+    else
+      throw Berr;
+  }
+
+  cout << psp( CurEcnt ) << "exit E " << CurEcnt << endl;
+
+  return rValue1;
+}
+
+//*****************************************************************************
+// B --> R [( < | > | == ) R ]
+float B ( void )
+{
+  float rValue1 = 0;
+  static int Bcnt = 0;
+  int CurBcnt = Bcnt++;
+  char const *Rerr =
+    "term does not start with 'not' | '-' | 'ID' | 'FLOATLIT' | '('";
+
+  cout << psp( CurBcnt ) << "enter B " << CurBcnt << endl;
+
+  // We next expect to see an R
+  if( IsFirstOfR() )
+    rValue1 = R();
+  else
+    throw Rerr;
+
+  // We may find one more R
+  if( iTok == TOK_LESSTHAN || iTok == TOK_GREATERTHAN || iTok == TOK_EQUALTO )
+  {
+    cout << "-->found " << yytext << endl;
+    int iTokLast = iTok;
+    iTok = yylex();
+    if( IsFirstOfR() )
+      R();
+    else
+      throw Rerr;
+  }
+
+  // In case this was not used as a boolean expression so return whatever we found
+  cout << psp( CurBcnt ) << "exit B " << CurBcnt << endl;
+  return rValue1;
+}
+
+//*****************************************************************************
+// R --> T {( + | - ) T }
+float R ( void )
+{
+  float rValue1 = 0;   // The value to return
+  float rValue2;
+  static int Rcnt = 0; // Count the number of R's
+  int CurRcnt = Rcnt++;
+  char const *Terr =
+    "term does not start with 'not' | '-' | 'ID' | 'FLOATLIT' | '('";
+
+  cout << psp( CurRcnt ) << "enter R " << CurRcnt << endl;
+
   // We next expect to see a T
   if( IsFirstOfT() )
-    rValue1 = T();
+    T();
   else
     throw Terr;
 
-  // As long as the next token is + or -, keep parsing T's
+  // We may see more T's
   while( iTok == TOK_PLUS || iTok == TOK_MINUS )
   {
     cout << "-->found " << yytext << endl;
     int iTokLast = iTok;
     iTok = yylex();
     if( IsFirstOfT() )
-      rValue2 = T();
+      T();
     else
       throw Terr;
 
-    // Perform the operation to update rValue1 acording to rValue2
+    // Perform the operation to update rValue1 according to rValue2
     switch( iTokLast )
     {
-    case TOK_PLUS:
-      rValue1 = rValue1 + rValue2;
-      break;
+      case TOK_PLUS:
+        rValue1 = rValue1 + rValue2;
+        break;
 
-    case TOK_MINUS:
-      rValue1 = rValue1 - rValue2;
+      case TOK_MINUS:
+        rValue1 = rValue1 - rValue2;
+        break;
     }
   }
 
-  cout << psp( CurEcnt ) << "exit E " << CurEcnt << endl;
+  cout << psp( CurRcnt ) << "exit R " << CurRcnt << endl;
 
   return rValue1;
 }
@@ -335,15 +404,22 @@ float T ( void )
 }
 
 //*****************************************************************************
-// F --> ID | INTLIT | (
-float F( void )
+// F --> [ not | - ] U
+float F ( void ) {
+  // TODO: F
+  // TODO: Do we have [ not | - ] yet or do we have U...?
+}
+
+//*****************************************************************************
+// U --> ID | FLOATLIT | (E)
+float U ( void )
 {
   float rValue = 0;           // the value to return
   SymbolTableT::iterator it;  // look up values in symbol table
-  static int Fcnt = 0;        // Count the number of F's
-  int CurFcnt = Fcnt++;
+  static int Ucnt = 0;        // Count the number of F's
+  int CurUcnt = Ucnt++;
 
-  cout << psp( CurFcnt ) << "enter F " << CurFcnt << endl;
+  cout << psp( CurUcnt ) << "enter U " << CurUcnt << endl;
 
   // Determine what token we have
   switch( iTok )
@@ -363,8 +439,8 @@ float F( void )
     iTok = yylex();
     break;
 
-  case TOK_INTLIT:
-    cout << "-->found INTLIT: " << yytext << endl;
+  case TOK_FLOATLIT:
+    cout << "-->found FLOATLIT: " << yytext << endl;
 
     // Capture the value of this literal
     rValue = (float)atof( yytext );
@@ -387,12 +463,175 @@ float F( void )
 
   default:
     // If we made it to here, syntax error
-    throw "factor does not start with 'ID' | 'INTLIT' | '('";
+    throw "factor does not start with 'ID' | 'FLOATLIT' | '('";
   }
 
-  cout << psp( CurFcnt ) << "exit F " << CurFcnt << endl;
+  cout << psp( CurUcnt ) << "exit U " << CurUcnt << endl;
 
   return rValue;
+}
+
+//*****************************************************************************
+// G --> read [ STRINGLIT ] ID;
+void G ( void )
+{
+  static int Gcnt = 0;        // Count the number of F's
+  int CurGcnt = Gcnt++;
+
+  cout << psp( CurGcnt ) << "enter G " << CurGcnt << endl;
+
+  // We've already seen the read, is a stringlit next?
+  iTok = yylex();
+  if( iTok == TOK_STRINGLIT )
+  {
+    cout << "-->found " << yytext << endl;
+    iTok = yylex();
+  }
+
+  // Is next ID?
+  if( iTok == TOK_IDENTIFIER )
+  {
+    // Yes; exit G
+    cout << "-->found ID: " << yytext << endl;
+    cout << psp( CurGcnt ) << "exit G " << CurGcnt << endl;
+    return;
+  }
+  else
+  {
+    throw "missing 'ID' at end of read statement";
+  }
+}
+
+//*****************************************************************************
+// O --> print [ STRINGLIT ] [ ID ];
+void O ( void )
+{
+  static int Ocnt = 0;        // Count the number of F's
+  int CurOcnt = Ocnt++;
+
+  cout << psp( CurOcnt ) << "enter O " << CurOcnt << endl;
+
+  // We've already seen the print, is a stringlit next?
+  iTok = yylex();
+  if( iTok == TOK_STRINGLIT )
+  {
+    cout << "-->found " << yytext << endl;
+    iTok = yylex();
+  }
+
+  // Is next ID?
+  if( iTok == TOK_IDENTIFIER )
+    cout << "-->found " << yytext << endl;
+
+  cout << psp( CurOcnt ) << "exit O " << CurOcnt << endl;
+  return;
+}
+
+//*****************************************************************************
+// C --> if (E) P [ else P ]
+void C ( void )
+{
+  static int Ccnt = 0;        // Count the number of F's
+  int CurCcnt = Ccnt++;
+
+  cout << psp( CurCcnt ) << "enter C " << CurCcnt << endl;
+
+  // We've already seen the if, is a ( next?
+  iTok = yylex();
+  if( iTok == TOK_OPENPAREN )
+  {
+    cout << "-->found " << yytext << endl;
+    iTok = yylex();
+  }
+  else
+  {
+    throw "missing ( after 'if' in if statement!";
+  }
+
+  // We should see an E next
+  if( IsFirstOfE() )
+    E();
+  else
+    throw "missing expression after '(' in if statement!";
+
+  // We should see ) next
+  if( iTok == TOK_CLOSEPAREN )
+  {
+    cout << "-->found " << yytext << endl;
+    iTok = yylex();
+  }
+  else
+  {
+    throw "missing ')' after expression in if statement!";
+  }
+
+  // We should see a P next
+  if( IsFirstOfP() )
+    P();
+  else
+    throw "missing 'P' after if clause!";
+
+  // We may find else next
+  if( iTok == TOK_ELSE )
+  {
+      cout << "-->found " << yytext << endl;
+      iTok = yylex();
+
+      // We should find a P next
+      if( IsFirstOfP() )
+        P();
+      else
+        throw "missing 'P' after else!";
+  }
+
+  cout << psp( CurCcnt ) << "exit C " << CurCcnt << endl;
+}
+
+//*****************************************************************************
+// W --> while (E) P
+void W ( void )
+{
+  static int Wcnt = 0;        // Count the number of F's
+  int CurWcnt = Wcnt++;
+
+  cout << psp( CurWcnt ) << "enter W " << CurWcnt << endl;
+
+  // We've already seen the while, is a ( next?
+  iTok = yylex();
+  if( iTok == TOK_OPENPAREN )
+  {
+    cout << "-->found " << yytext << endl;
+    iTok = yylex();
+  }
+  else
+  {
+    throw "missing ( after 'while' in while!";
+  }
+
+  // We should see an E next
+  if( IsFirstOfE() )
+    E();
+  else
+    throw "missing expression after '(' in while!";
+
+  // We should see ) next
+  if( iTok == TOK_CLOSEPAREN )
+  {
+    cout << "-->found " << yytext << endl;
+    iTok = yylex();
+  }
+  else
+  {
+    throw "missing ')' after expression in while!";
+  }
+
+  // We should see a P next
+  if( IsFirstOfP() )
+    P();
+  else
+    throw "missing 'P' after while clause!";
+
+  cout << psp( CurWcnt ) << "exit W " << CurWcnt << endl;
 }
 
 //*****************************************************************************

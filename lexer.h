@@ -17,8 +17,11 @@
 #define TOK_READ         1012
 #define TOK_PRINT        1013
 #define TOK_IF           1014
-#define TOK_WHILE        1015
+#define TOK_ELSE         1015
+#define TOK_WHILE        1016
 #define TOK_NOT          1021
+#define TOK_AND          1022
+#define TOK_OR           1023
 
 // Punctuation
 #define TOK_SEMICOLON    2000
@@ -26,6 +29,9 @@
 #define TOK_CLOSEPAREN   2002
 #define TOK_OPENBRACE    2005
 #define TOK_CLOSEBRACE   2006
+#define TOK_LESSTHAN     2010
+#define TOK_GREATERTHAN  2011
+#define TOK_EQUALTO      2012
 
 // Operators
 #define TOK_PLUS         3000
