@@ -42,9 +42,8 @@
 
 // Useful abstractions
 #define TOK_IDENTIFIER   4000  // identifier
-#define TOK_INTLIT       4001  // integer literal
-#define TOK_FLOATLIT     4002  // float literal
-#define TOK_STRINGLIT    4003  // string literal
+#define TOK_FLOATLIT     4001  // float literal
+#define TOK_STRINGLIT    4002  // string literal
 #define TOK_EOF          5000  // end of file
 #define TOK_EOF_SL       5001  // end of file while parsing string literal
 #define TOK_UNKNOWN      6000  // unknown lexeme

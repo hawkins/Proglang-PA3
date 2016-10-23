@@ -13,15 +13,15 @@ int yyLine = 1;
 %%
 
  /* Keywords */
+let       { return TOK_LET; }
+read      { return TOK_READ; }
+print     { return TOK_PRINT; }
 if        { return TOK_IF; }
 else      { return TOK_ELSE; }
-read      { return TOK_READ; }
-let       { return TOK_LET; }
-print     { return TOK_PRINT; }
+while     { return TOK_WHILE; }
+not       { return TOK_NOT; }
 and       { return TOK_AND; }
 or        { return TOK_OR; }
-not       { return TOK_NOT; }
-while     { return TOK_WHILE; }
 
  /* Punctuation */
 
@@ -32,6 +32,7 @@ while     { return TOK_WHILE; }
 \}        { return TOK_CLOSEBRACE; }
 \<        { return TOK_LESSTHAN; }
 \>        { return TOK_GREATERTHAN; }
+==        { return TOK_EQUALTO; }
 
 
  /* Operators */
@@ -41,7 +42,6 @@ while     { return TOK_WHILE; }
 \*        { return TOK_MULTIPLY; }
 \/        { return TOK_DIVIDE; }
 :=        { return TOK_ASSIGN; }
-==        { return TOK_EQUALTO; }
 
  /* Abstractions */
 

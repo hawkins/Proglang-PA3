@@ -29,8 +29,8 @@ void  P ( void );
 void  S ( void );
 void  A ( void );
 float E ( void );
-float B ( void ); // TODO: Is this a boolean? Not float? What?
-float R ( void ); // TODO: This is arithmetic
+float B ( void );
+float R ( void );
 float T ( void );
 float F ( void );
 float U ( void );
@@ -112,7 +112,7 @@ int main ( int argc, char* argv[] )
 }
 
 //*****************************************************************************
-// P --> \{ {S} \}
+// P --> { {S} }
 void P ( void )
 {
   static int Pcnt = 0; // Count the number of P's
@@ -227,7 +227,6 @@ void A ( void )
   //cout << "key: " << it->first << " val: " << it->second << endl;
 
   // Last should be a ';' token
-  // iTok = yylex(); // TODO: remove?
   if( iTok != TOK_SEMICOLON )
     throw "missing ';' at end of assignment statement";
   cout << "-->found " << yytext << endl;
@@ -407,7 +406,6 @@ float T ( void )
 // F --> [ not | - ] U
 float F ( void ) {
   float rValue = 0;
-  // TODO: Replace all rValue1 with rValue where there is no rValue2
   static int Fcnt = 0;
   int CurFcnt = Fcnt++;
 
@@ -472,8 +470,15 @@ float U ( void )
   case TOK_OPENPAREN:
     // We expect (E); parse it
     cout << "-->found (" << endl;
+
+    // Parse E
     iTok = yylex();
-    rValue = E(); // TODO: Improve this with isfirstofe
+    if( IsFirstOfE() )
+      rValue = E();
+    else
+      throw "expression does not start with 'not' | '-' | 'ID' | 'FLOATLIT' | '('";
+
+    // Last should be )
     if( iTok == TOK_CLOSEPAREN ) {
       cout << "-->found )" << endl;
       iTok = yylex();
