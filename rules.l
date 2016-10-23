@@ -26,6 +26,8 @@ print     { return TOK_PRINT; }
 \)        { return TOK_CLOSEPAREN; }
 \{        { return TOK_OPENBRACE; }
 \}        { return TOK_CLOSEBRACE; }
+\<        { return TOK_LESSTHAN; }
+\>        { return TOK_GREATERTHAN; }
 
 
  /* Operators */
@@ -39,7 +41,7 @@ print     { return TOK_PRINT; }
  /* Abstractions */
 
 [A-Za-z][0-9A-Za-z_]*  { return TOK_IDENTIFIER; }
-[0-9]+                 { return TOK_FLOATLIT; }
+[0-9]+(\.[0-9]+)?      { return TOK_FLOATLIT; }
 \"[^\"]*\"             { return TOK_STRINGLIT; }
 \"[^\"]+               { return TOK_EOF_SL; }
 
