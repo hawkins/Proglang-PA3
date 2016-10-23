@@ -134,6 +134,7 @@ void P ( void )
   cout << "-->found " << yytext << endl;
 
   // Read the next token
+  iTok = yylex();
 
   cout << psp( CurPcnt ) << "exit P " << CurPcnt << endl;
 }
@@ -176,7 +177,7 @@ void S ( void )
       throw Serr;
   }
 
-  cout << psp( CurScnt ) << "exit S" << CurScnt << endl;
+  cout << psp( CurScnt ) << "exit S " << CurScnt << endl;
 }
 
 
@@ -226,7 +227,7 @@ void A ( void )
   //cout << "key: " << it->first << " val: " << it->second << endl;
 
   // Last should be a ';' token
-  iTok = yylex();
+  // iTok = yylex(); // TODO: remove?
   if( iTok != TOK_SEMICOLON )
     throw "missing ';' at end of assignment statement";
   cout << "-->found " << yytext << endl;
@@ -241,8 +242,7 @@ void A ( void )
 // E --> B {( and | or ) B }
 float E ( void )
 {
-  float rValue1 = 0;   // The value to return
-  float rValue2;
+  float rValue = 0;   // The value to return
   static int Ecnt = 0; // Count the number of E's
   int CurEcnt = Ecnt++;
   char const *Berr =
@@ -252,7 +252,7 @@ float E ( void )
 
   // We next expect to see a B
   if( IsFirstOfB() )
-    B();
+    rValue = B();
   else
     throw Berr;
 
@@ -263,21 +263,21 @@ float E ( void )
     int iTokLast = iTok;
     iTok = yylex();
     if( IsFirstOfB() )
-      rValue1 = B();
+      B();
     else
       throw Berr;
   }
 
   cout << psp( CurEcnt ) << "exit E " << CurEcnt << endl;
 
-  return rValue1;
+  return rValue;
 }
 
 //*****************************************************************************
 // B --> R [( < | > | == ) R ]
 float B ( void )
 {
-  float rValue1 = 0;
+  float rValue = 0;
   static int Bcnt = 0;
   int CurBcnt = Bcnt++;
   char const *Rerr =
@@ -287,7 +287,7 @@ float B ( void )
 
   // We next expect to see an R
   if( IsFirstOfR() )
-    rValue1 = R();
+    rValue = R();
   else
     throw Rerr;
 
@@ -305,7 +305,7 @@ float B ( void )
 
   // In case this was not used as a boolean expression so return whatever we found
   cout << psp( CurBcnt ) << "exit B " << CurBcnt << endl;
-  return rValue1;
+  return rValue;
 }
 
 //*****************************************************************************
@@ -323,7 +323,7 @@ float R ( void )
 
   // We next expect to see a T
   if( IsFirstOfT() )
-    T();
+    rValue1 = T();
   else
     throw Terr;
 
@@ -334,7 +334,7 @@ float R ( void )
     int iTokLast = iTok;
     iTok = yylex();
     if( IsFirstOfT() )
-      T();
+      rValue2 = T();
     else
       throw Terr;
 
@@ -365,7 +365,7 @@ float T ( void )
   static int Tcnt = 0; // Count the number of T's
   int CurTcnt = Tcnt++;
   char const *Ferr =
-    "factor does not start with 'ID' | 'INTLIT' | '('";
+    "factor does not start with 'ID' | 'FLOATLIT' | '('";
 
   cout << psp( CurTcnt ) << "enter T " << CurTcnt << endl;
 
@@ -406,8 +406,29 @@ float T ( void )
 //*****************************************************************************
 // F --> [ not | - ] U
 float F ( void ) {
-  // TODO: F
-  // TODO: Do we have [ not | - ] yet or do we have U...?
+  float rValue = 0;
+  // TODO: Replace all rValue1 with rValue where there is no rValue2
+  static int Fcnt = 0;
+  int CurFcnt = Fcnt++;
+
+  cout << psp( CurFcnt ) << "enter F " << CurFcnt << endl;
+
+  // We may have a NOT or a MINUS
+  if( iTok == TOK_NOT || iTok == TOK_MINUS )
+  {
+    cout << "-->found " << yytext << endl;
+    iTok = yylex();
+  }
+
+  // Next should be U
+  if( IsFirstOfU() )
+    rValue = U();
+  else
+    throw "missing 'U' at end of 'F'";
+
+  cout << psp( CurFcnt ) << "exit F " << CurFcnt << endl;
+
+  return rValue;
 }
 
 //*****************************************************************************
@@ -452,7 +473,7 @@ float U ( void )
     // We expect (E); parse it
     cout << "-->found (" << endl;
     iTok = yylex();
-    rValue = E();
+    rValue = E(); // TODO: Improve this with isfirstofe
     if( iTok == TOK_CLOSEPAREN ) {
       cout << "-->found )" << endl;
       iTok = yylex();
@@ -480,26 +501,41 @@ void G ( void )
 
   cout << psp( CurGcnt ) << "enter G " << CurGcnt << endl;
 
-  // We've already seen the read, is a stringlit next?
+  // We've already seen the read
+  cout << "--> found " << yytext << endl;
+
+  // A string literal may be next
   iTok = yylex();
   if( iTok == TOK_STRINGLIT )
   {
-    cout << "-->found " << yytext << endl;
+    cout << "-->found string: " << yytext << endl;
     iTok = yylex();
   }
 
-  // Is next ID?
+  // Next should be ID
   if( iTok == TOK_IDENTIFIER )
   {
-    // Yes; exit G
     cout << "-->found ID: " << yytext << endl;
-    cout << psp( CurGcnt ) << "exit G " << CurGcnt << endl;
-    return;
+    // If the identifier is not yet in the symbol table, store it there
+    SymbolTableT::iterator it = SymbolTable.find( yytext );
+    if( it == SymbolTable.end() ) {
+      SymbolTable.insert( pair<string, float>(yytext, 1.0) );
+    }
   }
   else
   {
     throw "missing 'ID' at end of read statement";
   }
+
+  // Next should be ;
+  iTok = yylex();
+  if( iTok == TOK_SEMICOLON )
+    cout << "-->found: " << yytext << endl;
+  else
+    throw "missing ';' at end of read statement";
+
+  iTok = yylex();
+  cout << psp( CurGcnt ) << "exit G " << CurGcnt << endl;
 }
 
 //*****************************************************************************
@@ -511,17 +547,32 @@ void O ( void )
 
   cout << psp( CurOcnt ) << "enter O " << CurOcnt << endl;
 
-  // We've already seen the print, is a stringlit next?
+  // We've already seen the read
+  cout << "-->found " << yytext << endl;
+
+  // A string literal may be next
   iTok = yylex();
   if( iTok == TOK_STRINGLIT )
   {
-    cout << "-->found " << yytext << endl;
+    cout << "-->found string: " << yytext << endl;
     iTok = yylex();
   }
 
   // Is next ID?
   if( iTok == TOK_IDENTIFIER )
+  {
+    cout << "-->found ID: " << yytext << endl;
+    iTok = yylex();
+  }
+
+  // Next should be ;
+  if( iTok == TOK_SEMICOLON )
     cout << "-->found " << yytext << endl;
+  else
+    throw "missing ';' at end of print statement!";
+
+  // Read next token
+  iTok = yylex();
 
   cout << psp( CurOcnt ) << "exit O " << CurOcnt << endl;
   return;

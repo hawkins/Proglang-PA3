@@ -17,6 +17,7 @@ if        { return TOK_IF; }
 else      { return TOK_ELSE; }
 read      { return TOK_READ; }
 let       { return TOK_LET; }
+print     { return TOK_PRINT; }
 
  /* Punctuation */
 
