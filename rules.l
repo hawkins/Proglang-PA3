@@ -41,6 +41,7 @@ while     { return TOK_WHILE; }
 \*        { return TOK_MULTIPLY; }
 \/        { return TOK_DIVIDE; }
 :=        { return TOK_ASSIGN; }
+==        { return TOK_EQUALTO; }
 
  /* Abstractions */
 
