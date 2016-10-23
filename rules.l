@@ -18,6 +18,9 @@ else      { return TOK_ELSE; }
 read      { return TOK_READ; }
 let       { return TOK_LET; }
 print     { return TOK_PRINT; }
+and       { return TOK_AND; }
+or        { return TOK_OR; }
+not       { return TOK_NOT; }
 
  /* Punctuation */
 
