@@ -507,7 +507,7 @@ void G ( void )
   cout << psp( CurGcnt ) << "enter G " << CurGcnt << endl;
 
   // We've already seen the read
-  cout << "--> found " << yytext << endl;
+  cout << "-->found " << yytext << endl;
 
   // A string literal may be next
   iTok = yylex();
@@ -535,7 +535,7 @@ void G ( void )
   // Next should be ;
   iTok = yylex();
   if( iTok == TOK_SEMICOLON )
-    cout << "-->found: " << yytext << endl;
+    cout << "-->found " << yytext << endl;
   else
     throw "missing ';' at end of read statement";
 
